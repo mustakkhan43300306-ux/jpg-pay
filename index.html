@@ -1,0 +1,450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JPG PAY</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f7fd;
+  color: #24272b;
+}
+
+.container {
+  width: 100%;
+  max-width: 490px;
+  min-height: 100vh;
+  margin: auto;
+  padding: 30px 24px 50px;
+  text-align: center;
+  position: relative;
+}
+
+.brand {
+  width: 100%;
+  margin: 65px auto 90px;
+  display: flex;
+  justify-content: center;
+}
+
+.brand svg {
+  width: 190px;
+  height: 190px;
+  max-width: 100%;
+}
+
+.field {
+  width: 100%;
+  height: 82px;
+  padding: 0 25px;
+  margin: 12px 0;
+  border: 2px solid #dcece7;
+  border-radius: 50px;
+  background: #fff;
+  font-size: 22px;
+  outline: none;
+}
+
+.field:focus {
+  border-color: #108c65;
+}
+
+.field::placeholder {
+  color: #c8cacc;
+}
+
+.options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 18px 4px;
+  color: #168866;
+  font-size: 16px;
+  gap: 10px;
+}
+
+.options label,
+.privacy label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
+  accent-color: #108c65;
+}
+
+.link {
+  border: none;
+  background: none;
+  color: #168866;
+  text-decoration: underline;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.privacy {
+  margin: 35px 0 18px;
+  color: #168866;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.signin {
+  width: 100%;
+  height: 85px;
+  border: none;
+  border-radius: 50px;
+  background: #108c65;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.register {
+  margin-top: 22px;
+  font-size: 16px;
+  color: #168866;
+}
+
+.forgot {
+  margin-top: 75px;
+}
+
+.version {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  color: #9ba4af;
+  font-size: 15px;
+}
+
+/* Verification popup */
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.52);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 10;
+}
+
+.popup {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 20px;
+  padding: 28px 22px 35px;
+  text-align: left;
+}
+
+.popup-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 22px;
+  margin-bottom: 40px;
+}
+
+.close {
+  border: none;
+  background: #edf7f4;
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  font-size: 25px;
+  color: #555;
+  cursor: pointer;
+}
+
+.popup p {
+  color: #168866;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+.otp-row {
+  display: flex;
+  align-items: center;
+  border: 2px solid #dcece7;
+  border-radius: 50px;
+  padding: 8px 12px;
+  margin-top: 18px;
+  gap: 8px;
+}
+
+.otp-row input {
+  min-width: 0;
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  padding: 10px;
+}
+
+.send {
+  border: none;
+  border-radius: 30px;
+  background: #108c65;
+  color: white;
+  font-size: 16px;
+  padding: 12px 20px;
+  cursor: pointer;
+}
+
+.send:disabled {
+  background: #a7bcb4;
+}
+
+.confirm {
+  width: 100%;
+  height: 70px;
+  border: none;
+  border-radius: 50px;
+  background: #108c65;
+  color: white;
+  font-size: 21px;
+  margin-top: 55px;
+  cursor: pointer;
+}
+
+.status {
+  min-height: 24px;
+  color: #b45309;
+  font-size: 14px;
+  margin-top: 14px;
+}
+
+@media (max-height: 750px) {
+  .brand {
+    margin-top: 25px;
+    margin-bottom: 35px;
+  }
+  .brand svg {
+    width: 150px;
+    height: 150px;
+  }
+  .field {
+    height: 65px;
+  }
+  .forgot {
+    margin-top: 35px;
+  }
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+  <!-- JPG PAY LOGO -->
+  <div class="brand">
+    <svg viewBox="0 0 210 210"
+         xmlns="http://www.w3.org/2000/svg">
+      <rect x="54" y="5" width="140" height="132"
+            rx="16" fill="#202631"/>
+
+      <g fill="#f05a0a">
+        <rect x="22" y="20" width="12" height="12"/>
+        <rect x="6" y="44" width="12" height="12"/>
+        <rect x="22" y="62" width="12" height="12"/>
+        <rect x="6" y="88" width="12" height="12"/>
+        <rect x="22" y="108" width="12" height="12"/>
+      </g>
+
+      <g fill="#f3f7fd">
+        <rect x="38" y="33" width="15" height="15"/>
+        <rect x="38" y="65" width="15" height="15"/>
+        <rect x="38" y="97" width="15" height="15"/>
+        <rect x="76" y="49" width="13" height="13"/>
+        <rect x="76" y="81" width="13" height="13"/>
+        <rect x="76" y="113" width="13" height="13"/>
+      </g>
+
+      <rect x="145" y="56" width="65" height="39"
+            rx="11" fill="#f05a0a"/>
+      <path d="M162 76 L172 85 L192 65"
+            fill="none" stroke="#d5dce1"
+            stroke-width="7" stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+      <text x="105" y="164" text-anchor="middle"
+            font-family="Arial" font-size="46"
+            font-weight="bold" fill="#f05a0a">JPG</text>
+      <text x="105" y="192" text-anchor="middle"
+            font-family="Arial" font-size="23"
+            font-weight="bold" letter-spacing="9"
+            fill="#202631">PAY</text>
+    </svg>
+  </div>
+
+  <form id="loginForm">
+    <input class="field" id="phone" type="tel"
+           placeholder="Phone Number" required
+           autocomplete="off">
+
+    <input class="field" id="password" type="password"
+           placeholder="Password" required
+           autocomplete="off">
+
+    <div class="options">
+      <button type="button" class="link">Register</button>
+
+      <label>
+        <input type="checkbox" id="remember">
+        Remember Me
+      </label>
+    </div>
+
+    <div class="privacy">
+      <label>
+        <input type="checkbox" id="privacy" required>
+        <span>Agree "User Privacy Agreement"</span>
+      </label>
+    </div>
+
+    <button class="signin" type="submit">Sign In</button>
+  </form>
+
+  <div class="forgot">
+    <button type="button" class="link" id="forgot">
+      Forget Password
+    </button>
+  </div>
+
+  <div class="version">v1.0.3</div>
+</div>
+
+<!-- OTP DEMO POPUP -->
+<div class="overlay" id="overlay">
+  <div class="popup">
+    <div class="popup-head">
+      <span>New Device Verification</span>
+      <button class="close" id="closePopup"
+              type="button">×</button>
+    </div>
+
+    <p>
+      Demo mode: No real OTP will be sent.
+      Verification is not available.
+    </p>
+
+    <p id="demoMessage">
+      You can test the OTP screen, but login will remain blocked.
+    </p>
+
+    <div class="otp-row">
+      <input type="text" id="otp"
+             placeholder="OTP Code"
+             inputmode="numeric"
+             maxlength="8"
+             autocomplete="off">
+      <button class="send" id="sendOtp"
+              type="button">Send</button>
+    </div>
+
+    <div class="status" id="status"></div>
+
+    <button class="confirm" id="confirm"
+            type="button">Confirm</button>
+  </div>
+</div>
+
+<script>
+const loginForm = document.getElementById("loginForm");
+const overlay = document.getElementById("overlay");
+const otpInput = document.getElementById("otp");
+const statusText = document.getElementById("status");
+const sendButton = document.getElementById("sendOtp");
+
+let attempts = 0;
+let locked = false;
+let timer = null;
+
+loginForm.addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  if (!document.getElementById("privacy").checked) {
+    alert("Please agree to the Privacy Agreement.");
+    return;
+  }
+
+  // Demo only: credentials are not sent or saved.
+  overlay.style.display = "flex";
+});
+
+document.getElementById("closePopup").onclick = function() {
+  overlay.style.display = "none";
+};
+
+sendButton.onclick = function() {
+  if (locked) return;
+
+  statusText.textContent =
+    "Demo mode: OTP service is not connected. No OTP was sent.";
+};
+
+document.getElementById("confirm").onclick = function() {
+  if (locked) {
+    statusText.textContent =
+      "Please wait for the timer to finish.";
+    return;
+  }
+
+  if (!otpInput.value.trim()) {
+    statusText.textContent = "Enter a test code first.";
+    return;
+  }
+
+  // Never store or send the entered code.
+  otpInput.value = "";
+  attempts++;
+
+  if (attempts >= 3) {
+    locked = true;
+    let seconds = 60;
+    sendButton.disabled = true;
+    statusText.textContent =
+      "Demo verification failed. Try again in 60 seconds.";
+
+    timer = setInterval(function() {
+      seconds--;
+      statusText.textContent =
+        "Try again in " + seconds + " seconds.";
+
+      if (seconds <= 0) {
+        clearInterval(timer);
+        timer = null;
+        locked = false;
+        attempts = 0;
+        sendButton.disabled = false;
+        statusText.textContent =
+          "You can try again. No OTP was sent.";
+      }
+    }, 1000);
+  } else {
+    statusText.textContent =
+      "Demo verification failed (" + attempts +
+      "/3). Login is still blocked.";
+  }
+};
+
+document.getElementById("forgot").onclick = function() {
+  alert("Password reset is not connected in this demo.");
+};
+</script>
+</body>
+</html>
